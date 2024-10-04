@@ -114,7 +114,6 @@ export class FormComponent {
       } else {
         this.fileError = 'Please upload a valid Excel file (.xlsx or .xls).';
         this.selectedFile = null; // Reset selectedFile on error
-        this.clearFields();
       }
     }
   }
