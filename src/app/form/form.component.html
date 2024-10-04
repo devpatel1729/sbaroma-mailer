@@ -5,7 +5,7 @@
 </nav>
 
 <form [formGroup]="emailForm" (submit)="sendMail($event)" class="d-flex flex-column">
-  <div class="form-group d-flex my-2">
+  <div class="form-group my-2">
     <label for="file">Select Excel File</label>
     <input type="file" accept=".xlsx, .xls" (change)="onFileChange($event)" class="form-control" id="file" required />
   </div>
@@ -15,7 +15,7 @@
     <p class="errormsg" *ngIf="selectedFile == null && isSubmitted">Enter An Excel file</p>
   </div>
 
-  <div class="form-group d-flex my-2">
+  <div class="form-group my-2">
     <label for="subject">Subject</label>
     <input type="text" formControlName="subject" class="form-control" id="subject" placeholder="Enter email subject" required />
   </div>
@@ -24,7 +24,7 @@
     <p class="errormsg" *ngIf="emailForm.controls['subject'].errors && isSubmitted">Enter Subject</p>
   </div>
 
-  <div class="form-group d-flex my-2">
+  <div class="form-group my-2">
     <label for="htmlContent">HTML Content</label>
     <textarea formControlName="htmlContent" class="form-control" id="htmlContent" placeholder="Enter email content" rows="5" required></textarea>
   </div>
