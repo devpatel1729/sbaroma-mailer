@@ -1,0 +1,49 @@
+<nav class="navbar navbar-light bg-white">
+  <span class="navbar-brand">
+    <img src="http://sbaroma.com/image/logo.png" alt="logo" height="60px">
+  </span>
+</nav>
+
+<form [formGroup]="emailForm" (submit)="sendMail($event)" class="d-flex flex-column">
+  <div class="form-group d-flex my-2">
+    <label for="file">Select Excel File</label>
+    <input type="file" accept=".xlsx, .xls" (change)="onFileChange($event)" class="form-control" id="file" required />
+  </div>
+
+  <div>
+    <p class="errormsg" *ngIf="fileError">{{fileError}}</p>
+    <p class="errormsg" *ngIf="selectedFile == null && isSubmitted">Enter An Excel file</p>
+  </div>
+
+  <div class="form-group d-flex my-2">
+    <label for="subject">Subject</label>
+    <input type="text" formControlName="subject" class="form-control" id="subject" placeholder="Enter email subject" required />
+  </div>
+
+  <div>
+    <p class="errormsg" *ngIf="emailForm.controls['subject'].errors && isSubmitted">Enter Subject</p>
+  </div>
+
+  <div class="form-group d-flex my-2">
+    <label for="htmlContent">HTML Content</label>
+    <textarea formControlName="htmlContent" class="form-control" id="htmlContent" placeholder="Enter email content" rows="5" required></textarea>
+  </div>
+
+  <div>
+    <p class="errormsg" *ngIf="emailForm.controls['htmlContent'].errors && isSubmitted">Enter HtmlContent</p>
+  </div>
+
+  <button type="submit" class="btn btn-primary my-2">Send Mail</button>
+</form>
+
+<!-- Overlay to prevent user interaction -->
+<div *ngIf="isLoading" class="overlay">
+  <div class="spinner-container">
+    <div class="spinner-border" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+</div>
+
+<!-- <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div> -->
+<!-- <div *ngIf="successMessage" class="success">{{ successMessage }}</div> -->
