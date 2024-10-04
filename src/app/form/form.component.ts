@@ -89,16 +89,32 @@ export class FormComponent {
     const file = event.target.files[0]; // Get the first file
     this.fileError = null; // Reset error message
 
-    if (file) {
-      // Check file type
-      const validExtensions = ['.xlsx', '.xls'];
-      const fileExtension = file.name.split('.').pop();
+    // if (file) {
+    //   // Check file type
+    //   const validExtensions = ['.xlsx', '.xls'];
+    //   const fileExtension = file.name.split('.').pop();
 
-      if (validExtensions.includes('.' + fileExtension)) {
+    //   if (validExtensions.includes('.' + fileExtension)) {
+    //     this.selectedFile = file; // Assign the valid file to the selectedFile property
+    //   } else {
+    //     this.fileError = 'Please upload a valid Excel file (.xlsx or .xls).';
+    //     this.selectedFile = null; // Reset selectedFile on error
+    //   }
+    // }
+
+    if (file) {
+      // Check file type using MIME type
+      const validMimeTypes = [
+        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', // .xlsx
+        'application/vnd.ms-excel' // .xls
+      ];
+  
+      if (validMimeTypes.includes(file.type)) {
         this.selectedFile = file; // Assign the valid file to the selectedFile property
       } else {
         this.fileError = 'Please upload a valid Excel file (.xlsx or .xls).';
         this.selectedFile = null; // Reset selectedFile on error
+        this.clearFields();
       }
     }
   }
