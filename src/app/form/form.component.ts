@@ -56,6 +56,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MailService } from '../services/mail.service';
 import Swal from 'sweetalert2';
+import readXlsxFile from 'read-excel-file';
 
 @Component({
   selector: 'app-form',
@@ -118,32 +119,49 @@ export class FormComponent {
   //   }
   // }
 
+  // onFileChange(event: any): void {
+  //   const file = event.target.files[0]; // Get the first file
+  //   this.fileError = null; // Reset error message
+  
+  //   if (file) {
+  //     // Define valid MIME types for Excel files
+  //     const validMimeTypes = [
+  //       'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', // .xlsx
+  //       'application/vnd.ms-excel' // .xls
+  //     ];
+  
+  //     // Define valid file extensions for Excel files
+  //     const validExtensions = ['.xlsx', '.xls'];
+  //     const fileExtension = file.name.split('.').pop()?.toLowerCase(); // Get file extension
+  
+  //     // Check the file's MIME type first, fallback to extension check if MIME type is not recognized
+  //     const isValidType = validMimeTypes.includes(file.type);
+  //     const isValidExtension = validExtensions.includes('.' + fileExtension);
+  
+  //     // Validate file by either MIME type or file extension
+  //     if (isValidType || isValidExtension) {
+  //       this.selectedFile = file; // Assign the valid file to the selectedFile property
+  //     } else {
+  //       this.fileError = 'Please upload a valid Excel file (.xlsx or .xls).';
+  //       this.selectedFile = null; // Reset selectedFile on error
+  //     }
+  //   }
+  // }
+
   onFileChange(event: any): void {
     const file = event.target.files[0]; // Get the first file
     this.fileError = null; // Reset error message
   
     if (file) {
-      // Define valid MIME types for Excel files
-      const validMimeTypes = [
-        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', // .xlsx
-        'application/vnd.ms-excel' // .xls
-      ];
-  
-      // Define valid file extensions for Excel files
-      const validExtensions = ['.xlsx', '.xls'];
-      const fileExtension = file.name.split('.').pop()?.toLowerCase(); // Get file extension
-  
-      // Check the file's MIME type first, fallback to extension check if MIME type is not recognized
-      const isValidType = validMimeTypes.includes(file.type);
-      const isValidExtension = validExtensions.includes('.' + fileExtension);
-  
-      // Validate file by either MIME type or file extension
-      if (isValidType || isValidExtension) {
-        this.selectedFile = file; // Assign the valid file to the selectedFile property
-      } else {
-        this.fileError = 'Please upload a valid Excel file (.xlsx or .xls).';
-        this.selectedFile = null; // Reset selectedFile on error
-      }
+      // Attempt to read the Excel file content to validate it
+      readXlsxFile(file)
+        .then(() => {
+          this.selectedFile = file; // File is valid
+        })
+        .catch(() => {
+          this.fileError = 'Please upload a valid Excel file (.xlsx or .xls).';
+          this.selectedFile = null; // Invalid file
+        });
     }
   }
   
